@@ -23,6 +23,11 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = ['*']   # Railway provides the domain dynamically
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://building-safety-smoke-detection-production.up.railway.app',
+    'http://building-safety-smoke-detection-production.up.railway.app',
+]
+
 # ── Application definition ────────────────────────────────────────────────────
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -90,7 +95,8 @@ USE_TZ        = True
 # ── Static files ──────────────────────────────────────────────────────────────
 STATIC_URL  = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATIC_DIR = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = [STATIC_DIR] if os.path.exists(STATIC_DIR) else []
 
 # WhiteNoise compression for static files
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
