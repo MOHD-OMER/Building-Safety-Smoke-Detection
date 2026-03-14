@@ -16,8 +16,8 @@ h5py==3.9.0
 --extra-index-url https://download.pytorch.org/whl/cpu
 torch==2.0.1+cpu
 torchvision==0.15.2+cpu
-ultralytics==8.4.21 --no-deps
 ultralytics-thop>=2.0.18
 psutil>=5.8.0
 pyyaml>=5.3.1
 requests>=2.23.0
+polars>=0.20.0
