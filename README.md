@@ -159,7 +159,7 @@ Visit: **http://127.0.0.1:8000/**
 
 ## 🌐 Live Demo
 
-🔗 **[Deployed on Railway](https://your-app.up.railway.app)** ← update this link after deployment
+🔗 **[Deployed on Railway](https://building-safety-smoke-detection-production.up.railway.app/)** ← update this link after deployment
 
 ---
 
