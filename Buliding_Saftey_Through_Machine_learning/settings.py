@@ -25,8 +25,12 @@ ALLOWED_HOSTS = ['*']   # Railway provides the domain dynamically
 
 CSRF_TRUSTED_ORIGINS = [
     'https://building-safety-smoke-detection-production.up.railway.app',
-    'http://building-safety-smoke-detection-production.up.railway.app',
 ]
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SAMESITE = 'Lax'
 
 # ── Application definition ────────────────────────────────────────────────────
 INSTALLED_APPS = [
