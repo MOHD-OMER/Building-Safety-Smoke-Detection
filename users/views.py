@@ -482,3 +482,16 @@ def CNNPrediction(request):
                     yolo_detections = []
                     print(f"YOLO ERROR FULL: {traceback.format_exc()}")
                     messages.warning(request, f'YOLO detection unavailable: {str(yolo_err)}')
+        except Exception as e:
+            messages.error(request, f'Prediction error: {str(e)}')
+            return render(request, 'users/cnn_predict.html', {})
+
+    context = {
+        'result':          result,
+        'confidence':      confidence,
+        'label':           label,
+        'yolo_img_url':    yolo_img_url,
+        'yolo_detections': yolo_detections,
+        'yolo_available':  yolo_available,
+    }
+    return render(request, 'users/cnn_predict.html', context)            
