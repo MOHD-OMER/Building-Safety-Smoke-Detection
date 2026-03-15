@@ -1,4 +1,4 @@
-# 🔥 Enhancing Building Safety through Machine Learning and Deep Learning Based Smoke Detection [C169]
+# 🔥 Enhancing Building Safety through Machine Learning and Deep Learning Based Smoke Detection
 
 > **Major Project — Bachelor of Engineering in Computer Science and Engineering (AIML)**  
 > Lords Institute of Engineering and Technology (UGC Autonomous), Hyderabad  
