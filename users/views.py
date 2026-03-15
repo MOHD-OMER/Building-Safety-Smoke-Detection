@@ -404,6 +404,8 @@ def CNNPrediction(request):
             # 2.  YOLO OBJECT DETECTION  (bounding boxes on same image)
             # ══════════════════════════════════════════════════════════
             yolo_weights = os.path.join(settings.MEDIA_ROOT, 'models', 'best.pt')
+            import logging
+            logging.warning(f"YOLO path: {yolo_weights}, exists: {os.path.exists(yolo_weights)}")
 
             if os.path.exists(yolo_weights):
                 yolo_available = True
