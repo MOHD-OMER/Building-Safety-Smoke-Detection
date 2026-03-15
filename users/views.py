@@ -476,12 +476,13 @@ def CNNPrediction(request):
                     yolo_img_url = settings.MEDIA_URL + 'results/' + out_filename
 
                 except Exception as yolo_err:
-                    # YOLO failed — CNN result still shown, YOLO section hidden
+                    import traceback
                     yolo_available  = False
                     yolo_img_url    = None
                     yolo_detections = []
                     messages.warning(request,
                         f'YOLO detection unavailable: {str(yolo_err)}')
+                    print(f"YOLO ERROR FULL: {traceback.format_exc()}")
 
             # If best.pt doesn't exist, yolo_available stays False silently
 
