@@ -401,17 +401,15 @@ def CNNPrediction(request):
                 confidence = round((1.0 - fire_prob) * 100, 1)
 
             # ══════════════════════════════════════════════════════════
-            # 2.  YOLO OBJECT DETECTION  (bounding boxes on same image)
+            # 2.  YOLO OBJECT DETECTION
             # ══════════════════════════════════════════════════════════
             yolo_weights = os.path.join(settings.MEDIA_ROOT, 'models', 'best.pt')
-            import logging
-            logging.warning(f"YOLO path: {yolo_weights}, exists: {os.path.exists(yolo_weights)}")
 
             if os.path.exists(yolo_weights):
                 yolo_available = True
                 try:
-                    import cv2
                     from ultralytics import YOLO
+                    from PIL import ImageDraw, ImageFont
 
                     yolo_model   = YOLO(yolo_weights)
                     yolo_results = yolo_model.predict(
@@ -420,19 +418,16 @@ def CNNPrediction(request):
                         verbose=False
                     )
 
-                    # ── Draw bounding boxes on the original image ─────
-                    img_cv = cv2.imdecode(
-                        np.frombuffer(img_bytes, np.uint8),
-                        cv2.IMREAD_COLOR
-                    )
-                    h, w = img_cv.shape[:2]
+                    # ── Draw bounding boxes using Pillow (no cv2 needed) ──
+                    draw_img = PILImage.open(io.BytesIO(img_bytes)).convert('RGB')
+                    draw     = ImageDraw.Draw(draw_img)
+                    W, H     = draw_img.size
 
-                    # BGR colours per class
                     CLASS_COLORS = {
-                        'fire':  (50,  80, 255),   # red-orange
-                        'smoke': (200, 200,  50),   # cyan-ish
+                        'fire':  '#FF5032',
+                        'smoke': '#50C8C8',
                     }
-                    DEFAULT_COLOR = (0, 165, 255)
+                    DEFAULT_COLOR = '#FFA500'
 
                     for r in yolo_results:
                         for box in r.boxes:
@@ -444,34 +439,39 @@ def CNNPrediction(request):
                             color     = CLASS_COLORS.get(cls_name, DEFAULT_COLOR)
                             label_txt = f"{cls_name.capitalize()}  {conf_score:.2f}"
 
-                            # Draw box
-                            cv2.rectangle(img_cv, (x1, y1), (x2, y2), color, 2)
+                            # Draw box (3px thick)
+                            for t in range(3):
+                                draw.rectangle(
+                                    [x1-t, y1-t, x2+t, y2+t],
+                                    outline=color
+                                )
 
-                            # Draw filled label background + text
-                            font       = cv2.FONT_HERSHEY_SIMPLEX
-                            font_scale = max(0.45, min(0.65, w / 1200))
-                            (tw, th), _ = cv2.getTextSize(label_txt, font, font_scale, 1)
-                            ly1 = max(y1 - th - 8, 0)
-                            cv2.rectangle(img_cv,
-                                          (x1, ly1),
-                                          (x1 + tw + 8, ly1 + th + 8),
-                                          color, -1)
-                            cv2.putText(img_cv, label_txt,
-                                        (x1 + 4, ly1 + th + 3),
-                                        font, font_scale,
-                                        (255, 255, 255), 1, cv2.LINE_AA)
+                            # Draw label background + text
+                            font_size = max(14, int(W / 60))
+                            try:
+                                font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", font_size)
+                            except:
+                                font = ImageFont.load_default()
+
+                            bbox = draw.textbbox((0, 0), label_txt, font=font)
+                            tw   = bbox[2] - bbox[0]
+                            th   = bbox[3] - bbox[1]
+                            ly1  = max(y1 - th - 8, 0)
+
+                            draw.rectangle([x1, ly1, x1 + tw + 8, ly1 + th + 8], fill=color)
+                            draw.text((x1 + 4, ly1 + 2), label_txt, fill='white', font=font)
 
                             yolo_detections.append({
                                 'class': cls_name.capitalize(),
                                 'conf':  round(conf_score, 2),
                             })
 
-                    # ── Save annotated image to media/results/ ────────
+                    # ── Save annotated image ──────────────────────────────
                     results_dir  = os.path.join(settings.MEDIA_ROOT, 'results')
                     os.makedirs(results_dir, exist_ok=True)
                     out_filename = f"yolo_{unique_name}"
                     out_path     = os.path.join(results_dir, out_filename)
-                    cv2.imwrite(out_path, img_cv)
+                    draw_img.save(out_path)
 
                     yolo_img_url = settings.MEDIA_URL + 'results/' + out_filename
 
@@ -480,22 +480,5 @@ def CNNPrediction(request):
                     yolo_available  = False
                     yolo_img_url    = None
                     yolo_detections = []
-                    messages.warning(request,
-                        f'YOLO detection unavailable: {str(yolo_err)}')
                     print(f"YOLO ERROR FULL: {traceback.format_exc()}")
-
-            # If best.pt doesn't exist, yolo_available stays False silently
-
-        except Exception as e:
-            messages.error(request, f'Prediction error: {str(e)}')
-            return render(request, 'users/cnn_predict.html', {})
-
-    context = {
-        'result':          result,
-        'confidence':      confidence,
-        'label':           label,
-        'yolo_img_url':    yolo_img_url,
-        'yolo_detections': yolo_detections,
-        'yolo_available':  yolo_available,
-    }
-    return render(request, 'users/cnn_predict.html', context)
+                    messages.warning(request, f'YOLO detection unavailable: {str(yolo_err)}')
