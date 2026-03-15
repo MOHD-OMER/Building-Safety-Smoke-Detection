@@ -18,6 +18,7 @@ import joblib
 import os
 import pandas as pd
 
+
 def UserRegisterActions(request):
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
@@ -331,7 +332,6 @@ def Prediction(request):
 # ================================================================
 import json
 import uuid
-import cv2
 from PIL import Image as PILImage
 import io
 
@@ -410,6 +410,7 @@ def CNNPrediction(request):
             if os.path.exists(yolo_weights):
                 yolo_available = True
                 try:
+                    import cv2
                     from ultralytics import YOLO
 
                     yolo_model   = YOLO(yolo_weights)
