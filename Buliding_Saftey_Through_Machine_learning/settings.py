@@ -108,9 +108,6 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # ── Media files ───────────────────────────────────────────────────────────────
 MEDIA_URL  = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-import os
-print("MEDIA_ROOT:", MEDIA_ROOT)
-print("best.pt exists:", os.path.exists(os.path.join(MEDIA_ROOT, 'models', 'best.pt')))
 
 # ── Default primary key ───────────────────────────────────────────────────────
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

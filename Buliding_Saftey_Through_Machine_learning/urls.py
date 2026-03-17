@@ -4,7 +4,8 @@ See: https://docs.djangoproject.com/en/5.2/topics/http/urls/
 """
 from django.contrib import admin
 from django.http import HttpResponse
-from django.urls import path
+from django.urls import path, re_path
+from django.views.static import serve
 from admins import views as mainView
 from admins import views as admins
 from users import views as usr
@@ -51,5 +52,10 @@ urlpatterns = [
     path("training/", usr.Training, name="Training"),
     path("prediction/", usr.Prediction, name="prediction"),
     path("cnn-prediction/", usr.CNNPrediction, name="CNNPrediction"),  # CNN module
+]
 
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# Always serve media files (uploaded images, YOLO results)
+# This replaces the static() helper which only works when DEBUG=True
+urlpatterns += [
+    re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
+]
