@@ -135,7 +135,7 @@ Both modules are integrated into a unified role-based Django 5.2 web application
 **No Smoke Detected (86.6% Confidence)**
 ![CNN No Smoke](screenshots/13_cnn_no_smoke.png)
 
-**YOLO Bounding Box Analysis — Fire 0.74 + Smoke 0.38**
+**YOLO Bounding Box Analysis — Fire & Smoke**
 ![YOLO Bounding Box](screenshots/14_yolo_bbox.png)
 
 ---
