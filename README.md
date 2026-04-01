@@ -525,6 +525,6 @@ Submitted as a Major Project for the partial fulfillment of the award of Bachelo
 Lords Institute of Engineering and Technology, Hyderabad
 B.E. CSE (AIML) — 2025–2026
 
-*Built with ❤️ by Team C169*
+*Built with ❤️ by Team*
 
 </div>
