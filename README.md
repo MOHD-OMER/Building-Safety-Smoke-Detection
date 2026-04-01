@@ -29,7 +29,7 @@ The entire system is delivered as a full-stack Django web application accessible
 
 | # | Name | Roll Number | Role |
 |---|------|-------------|------|
-| 1 | M.A. Omer | 160922748048 | Machine Learning Engineer / Deep Learning |
+| 1 | M.A. Omer | 160922748048 | AI/ML & System Architect |
 | 2 | Syed Abdul Wasay | 160922748015 | Full Stack Developer |
 | 3 | Syed Afeef ul Luqman | 160922748037 | Testing & Quality Assurance |
 | 4 | Mohammed Muneebuddin Ahmed | 160922748060 | Documentation & Research |
@@ -521,7 +521,7 @@ Submitted as a Major Project for the partial fulfillment of the award of Bachelo
 
 <div align="center">
 
-**SmokeGuard AI — C169**
+**SmokeGuard AI**
 Lords Institute of Engineering and Technology, Hyderabad
 B.E. CSE (AIML) — 2025–2026
 
