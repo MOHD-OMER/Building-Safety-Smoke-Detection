@@ -30,7 +30,7 @@ The entire system is delivered as a full-stack Django web application accessible
 | # | Name | Roll Number | Role |
 |---|------|-------------|------|
 | 1 | M.A. Omer | 160922748048 | AI/ML & System Architect |
-| 2 | Syed Abdul Wasay | 160922748015 | Full Stack Developer |
+| 2 | Syed Abdul Wasay | 160922748015 | Full Stack Developer & ML training |
 | 3 | Syed Afeef ul Luqman | 160922748037 | Testing & Quality Assurance |
 | 4 | Mohammed Muneebuddin Ahmed | 160922748060 | Documentation & Research |
 
@@ -135,7 +135,10 @@ Both modules are integrated into a unified role-based Django 5.2 web application
 **No Smoke Detected (86.6% Confidence)**
 ![CNN No Smoke](screenshots/13_cnn_no_smoke.png)
 
-**YOLO Bounding Box Analysis — Fire & Smoke**
+**YOLO Bounding Box Analysis — Fire & Smoke Spatial Localization**
+
+> YOLOv8 draws colour-coded bounding boxes — red for fire, cyan for smoke — with confidence scores on the annotated output image
+
 ![YOLO Bounding Box](screenshots/14_yolo_bbox.png)
 
 ---
