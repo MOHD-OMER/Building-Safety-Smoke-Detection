@@ -215,7 +215,7 @@ Both modules are integrated into a unified role-based Django 5.2 web application
 ### Project File Structure
 
 ```
-C169 — Project Root/
+Project Root/
 │
 ├── manage.py                        # Django management entry point
 ├── train_cnn.py                     # Standalone CNN training script
