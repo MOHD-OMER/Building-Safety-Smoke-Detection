@@ -9,7 +9,6 @@
 [![TensorFlow](https://img.shields.io/badge/TensorFlow-2.10-FF6F00?logo=tensorflow&logoColor=white)](https://tensorflow.org)
 [![YOLOv8](https://img.shields.io/badge/YOLOv8-Ultralytics-7B2FBE)](https://ultralytics.com)
 [![scikit-learn](https://img.shields.io/badge/scikit--learn-1.6.1-F7931E?logo=scikit-learn&logoColor=white)](https://scikit-learn.org)
-[![Railway](https://img.shields.io/badge/Deployed-Railway-0B0D0E?logo=railway)](https://railway.app)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 
 ---
@@ -50,8 +49,11 @@ The entire system is delivered as a full-stack Django web application accessible
 6. [Quick Start](#-quick-start)
 7. [Environment Variables](#-environment-variables)
 8. [Manual Installation](#-manual-installation)
-9. [Troubleshooting](#-troubleshooting)
-10. [License](#-license)
+9. [ML Model Performance](#-ml-model-performance)
+10. [Sample Test Inputs](#-sample-test-inputs)
+11. [Project Documents](#-project-documents)
+12. [Troubleshooting](#-troubleshooting)
+13. [License](#-license)
 
 ---
 
@@ -177,7 +179,6 @@ Both modules are integrated into a unified role-based Django 5.2 web application
 | WSGI Server | Gunicorn | 21.2.0 |
 | Static Files | WhiteNoise | 6.7.0 |
 | Config Management | python-decouple | 3.8 |
-| Deployment | Railway | — |
 | Python | CPython | 3.10.13 |
 
 ---
@@ -334,12 +335,10 @@ SECRET_KEY=your-secret-key-here
 DEBUG=True
 ```
 
-For **Railway production deployment**, set these variables in the Railway dashboard:
-
 | Variable | Value |
 |----------|-------|
 | `SECRET_KEY` | A long, random secret string |
-| `DEBUG` | `False` |
+| `DEBUG` | `False` (for production) |
 
 > The project uses `python-decouple` to read `.env` files. Never commit your `.env` file to version control.
 
@@ -419,11 +418,41 @@ All seven classifiers were trained on 62,630 IoT sensor readings (80/20 train-te
 
 ---
 
-## 🌐 Live Demo
+## 🧪 Sample Test Inputs
 
-🔗 **[https://building-safety-smoke-detection-production.up.railway.app](https://building-safety-smoke-detection-production.up.railway.app)**
+Use these verified inputs to test the IoT Sensor ML prediction form.
+Select the **Random Forest** tab for best results.
 
-> Hosted on Railway (asia-southeast1). CNN inference may take 8–10 seconds on the free-tier CPU-only server.
+The form expects these 13 fields in order:
+`Temperature[C]`, `Humidity[%]`, `TVOC[ppb]`, `eCO2[ppm]`, `Raw H2`, `Raw Ethanol`, `Pressure[hPa]`, `PM1.0`, `PM2.5`, `NC0.5`, `NC1.0`, `NC2.5`, `CNT`
+
+### ✅ No Smoke (Expected: Safe / 0)
+
+| Set | Temp[C] | Humidity[%] | TVOC[ppb] | eCO2[ppm] | Raw H2 | Raw Ethanol | Pressure[hPa] | PM1.0 | PM2.5 | NC0.5 | NC1.0 | NC2.5 | CNT |
+|-----|---------|-------------|-----------|-----------|--------|-------------|----------------|-------|-------|-------|-------|-------|-----|
+| A | 21.611 | 52.78 | 25 | 400 | 13131 | 20035 | 939.639 | 0.83 | 0.86 | 5.70 | 0.889 | 0.020 | 2105 |
+| B | 16.300 | 53.34 | 15 | 400 | 13139 | 20034 | 939.604 | 1.11 | 1.15 | 7.61 | 1.187 | 0.027 | 1688 |
+| C | 14.933 | 46.97 | 101 | 400 | 13187 | 20083 | 939.631 | 1.11 | 1.16 | 7.67 | 1.196 | 0.027 | 2726 |
+
+### 🚨 Smoke / Fire Alarm (Expected: Alert / 1)
+
+| Set | Temp[C] | Humidity[%] | TVOC[ppb] | eCO2[ppm] | Raw H2 | Raw Ethanol | Pressure[hPa] | PM1.0 | PM2.5 | NC0.5 | NC1.0 | NC2.5 | CNT |
+|-----|---------|-------------|-----------|-----------|--------|-------------|----------------|-------|-------|-------|-------|-------|-----|
+| D | 18.636 | 50.86 | 1078 | 485 | 12857 | 19469 | 938.897 | 2.09 | 2.17 | 14.38 | 2.242 | 0.051 | 13804 |
+| E | 18.672 | 53.17 | 1084 | 486 | 12851 | 19458 | 938.909 | 2.04 | 2.12 | 14.07 | 2.194 | 0.050 | 13796 |
+| F | 20.560 | 50.03 | 79 | 400 | 13237 | 20151 | 939.644 | 2.15 | 2.24 | 14.83 | 2.312 | 0.052 | 4656 |
+
+---
+
+## 📄 Project Documents
+
+| Document | Description |
+|----------|-------------|
+| [Group Report](docs/Group_report.pdf) | Full team project report submitted to LIET |
+| [Individual Report](docs/Omer_Report.pdf) | Individual contribution report (M.A. Omer) |
+| [Presentation Slides](docs/Enhancing%20Building%20Safety%20through%20Machine%20Learning%20based%20Smoke%20Detection.pptx) | Project presentation deck |
+
+> 📌 **Research Paper** — Published. DOI link will be added here once received.
 
 ---
 
@@ -453,9 +482,9 @@ pip install numpy==1.26.4 --force-reinstall
 
 ---
 
-### `CSRF verification failed` (403 error) on Railway
+### `CSRF verification failed` (403 error)
 
-**Cause:** Railway sits behind a reverse proxy and Django blocks cross-origin form submissions.
+**Cause:** Django blocks cross-origin form submissions behind a reverse proxy.
 
 **Fix:** Ensure `settings.py` contains:
 ```python
@@ -465,22 +494,11 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 ---
 
-### Railway uses Python 3.13 instead of 3.10
-
-**Cause:** Railway's Railpack defaults to the latest Python version. TensorFlow 2.10 only supports Python 3.7–3.10.
-
-**Fix:** Ensure `.python-version` file exists in the project root:
-```
-3.10.13
-```
-
----
-
-### `torch` download times out during Railway build
+### `torch` download times out during build
 
 **Cause:** Default PyTorch pulls the full GPU build (~915 MB).
 
-**Fix:** Install CPU-only PyTorch from the official wheel index:
+**Fix:** Install CPU-only PyTorch:
 ```bash
 pip install torch --index-url https://download.pytorch.org/whl/cpu
 ```
@@ -489,21 +507,20 @@ pip install torch --index-url https://download.pytorch.org/whl/cpu
 
 ### `cnn_model.h5` not found
 
-**Cause:** The CNN model has not been trained yet, or the file was not committed to the repository.
+**Cause:** The CNN model has not been trained yet.
 
 **Fix:**
 ```bash
 python train_cnn.py
 ```
-Ensure the generated `media/cnn_model.h5` file is committed to git (it is under 100 MB and within GitHub's limit).
 
 ---
 
-### Static files not loading on Railway (`404` for CSS/JS)
+### Static files not loading (`404` for CSS/JS)
 
 **Cause:** Django does not serve static files in production (`DEBUG=False`) without a dedicated handler.
 
-**Fix:** Ensure `WhiteNoise` is installed and configured in `settings.py`:
+**Fix:** Ensure `WhiteNoise` is configured in `settings.py`:
 ```python
 MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
