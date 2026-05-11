@@ -452,8 +452,14 @@ The form expects these 13 fields in order:
 | [Individual Report](docs/Omer_Report.pdf) | Individual contribution report (M.A. Omer) |
 | [Presentation Slides](docs/Enhancing%20Building%20Safety%20through%20Machine%20Learning%20based%20Smoke%20Detection.pptx) | Project presentation deck |
 
-> 📌 **Research Paper** — Published. DOI link will be added here once received.
+## 📰 Research Paper
 
+**Enhancing Building Safety Through Machine Learning And Deep Learning Based Smoke Detection**
+Published in *International Journal of Engineering & Science Research (IJESR)*
+ISSN: 2277-2685 | Vol-16, Issue-2, April–June 2026 | Pages: 310–318
+
+🔗 **DOI:** [https://doi-ds.org/doilink/05.2026-44822198](https://doi-ds.org/doilink/05.2026-44822198)
+🔗 **Article:** [https://www.ijesr.org/index.php/ijesr/article/view/1632](https://www.ijesr.org/index.php/ijesr/article/view/1632)
 ---
 
 ## 🐛 Troubleshooting
